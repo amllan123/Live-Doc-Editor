@@ -1,5 +1,5 @@
-# Stage 1: Build
-FROM node:18 AS builder
+# Stage 1: Dependencies
+FROM node:18 AS dependencies
 
 # Set working directory
 WORKDIR /app
@@ -13,28 +13,20 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the Next.js application
-RUN npm run build
-
-# Stage 2: Production
-FROM node:18-alpine
+# Stage 2: Development
+FROM node:18
 
 # Set working directory
 WORKDIR /app
 
-# Copy only the necessary files from the build stage
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/package-lock.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/node_modules ./node_modules
-
-# Install the "serve" package to serve the built application
-RUN npm install -g serve
+# Copy only the necessary files from the dependencies stage
+COPY --from=dependencies /app /app
 
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["serve", "-s", ".next", "-p", "3000"]
+# Set environment variables (if any, adjust as needed)
+# ENV LIVEBLOCKS_SECRET_KEY=sk_your_secret_key_here
+
+# Command to run the application in development mode
+CMD ["npm", "run", "dev"]
