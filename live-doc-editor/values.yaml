@@ -7,7 +7,7 @@ replicaCount: 2
 image:
   repository: adrf968/live-doc-editor
   pullPolicy: IfNotPresent
-  tag: "10"
+  tag: "11"
 
 imagePullSecrets: []
 nameOverride: ""

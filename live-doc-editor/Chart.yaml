@@ -3,6 +3,6 @@ name: live-doc-editor
 description: A Helm chart for Live Document Editor application
 type: application
 version: 1.0.0
-appVersion: "10"
+appVersion: "11"
 keywords:
   - live-doc-editor
